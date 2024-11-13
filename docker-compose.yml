@@ -1,0 +1,52 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres
+    container_name: backend-fazenda
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_DB: backend-fazenda
+    ports:
+      - "5432:5432"
+    volumes:
+      - "./.postgres-data:/var/data/lib/postgresql/data"
+# version: "3"
+
+# services:
+#   api:
+#     container_name: backend-fazenda
+#     image: node:18.18
+#     restart: always
+#     tty: true
+#     depends_on:
+#       - database
+#     ports:
+#       - "3000:3000"
+#     volumes:
+#       - .:/usr/app
+#       - /usr/app/node_modules
+#     working_dir: "/usr/app"
+#     environment:
+#       DATABASE_URL: postgres://postgres:password@database:5432/backend-fazenda
+#     command: >
+#       sh -c "npm install &&
+#       npx prisma generate &&
+#       npx prisma migrate dev &&
+#       npx ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/index.ts"
+
+#   database:
+#     image: postgres
+#     container_name: backend-fazenda-db
+#     environment:
+#       POSTGRES_PASSWORD: password
+#       POSTGRES_USER: postgres
+#       POSTGRES_DB: backend-fazenda
+#     ports:
+#       - "5432:5432"
+#     volumes:
+#       - "./.postgres-data:/var/lib/postgresql/data"
+
+# volumes:
+#   .postgres-data:
