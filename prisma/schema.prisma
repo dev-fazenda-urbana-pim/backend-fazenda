@@ -1,0 +1,127 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum FornecedorStatus {
+  ATIVO
+  INATIVO
+}
+
+enum PedidoStatus {
+  ENTREGUE
+  A_CAMINHO
+  AGUARDANDO
+  EM_SEPARACAO
+}
+
+enum EstoqueStatus {
+  SEM_ESTOQUE
+  BAIXO
+  ALTO
+}
+
+enum Roles {
+  Admin
+  Fornecedor
+  Funcionario
+}
+
+enum FuncionarioStatus {
+  ATIVO
+  INATIVO
+}
+
+model Pedido {
+  id            String       @id @default(uuid()) @db.Uuid
+  nome_cliente  String
+  bairro        String
+  numero_resid  Int
+  data_pedido   DateTime
+  qtd_produto   Int
+  pedido_status PedidoStatus
+  produtos      Produto[]    @relation("PedidoProdutos")
+
+  Fornecedor   Fornecedor? @relation(fields: [fornecedorId], references: [id])
+  fornecedorId String?     @db.Uuid
+}
+
+model Produto {
+  id           String      @id @default(uuid()) @db.Uuid
+  nome         String
+  descricao    String
+  peso         Float
+  preco        Float
+  gtin         Int
+  imagem       BigInt
+  pedidos      Pedido[]    @relation("PedidoProdutos")
+  estoques     Estoque[]
+  Fornecedor   Fornecedor? @relation(fields: [fornecedorId], references: [id])
+  fornecedorId String?     @db.Uuid
+}
+
+model Fornecedor {
+  id           String           @id @default(uuid()) @db.Uuid
+  razao_social String
+  cnpj         String           @unique
+  uf           String
+  status       FornecedorStatus
+  produtos     Produto[]
+
+  pedidos         Pedido[]
+  Admin_Fazenda   Admin_Fazenda? @relation(fields: [admin_FazendaId], references: [id])
+  admin_FazendaId String?        @db.Uuid
+}
+
+model Admin_Fazenda {
+  id           String         @id @default(uuid()) @db.Uuid
+  fornecedores Fornecedor[]
+  funcionarios Funcionario[]
+  equipe       Departamento[]
+}
+
+model Usuarios {
+  id    String @id @default(uuid()) @db.Uuid
+  email String @unique
+  senha String
+  role  Roles
+}
+
+model Funcionario {
+  id              String            @id @default(uuid()) @db.Uuid
+  funcao          String
+  status          FuncionarioStatus
+  departamentos   Departamento[]
+  Admin_Fazenda   Admin_Fazenda?    @relation(fields: [admin_FazendaId], references: [id])
+  admin_FazendaId String?           @db.Uuid
+}
+
+model Departamento {
+  id               String         @id @default(uuid()) @db.Uuid
+  nome_depto       String
+  qtd_funcionarios Int
+  funcionarios     Funcionario[]
+  Admin_Fazenda    Admin_Fazenda? @relation(fields: [admin_FazendaId], references: [id])
+  admin_FazendaId  String?        @db.Uuid
+}
+
+model Estoque {
+  id               String        @id @default(uuid()) @db.Uuid
+  setor            String
+  prateleira       String
+  data_atualizacao DateTime
+  estoque_status   EstoqueStatus
+
+  Produto   Produto? @relation(fields: [produtoId], references: [id])
+  produtoId String?  @db.Uuid
+}
