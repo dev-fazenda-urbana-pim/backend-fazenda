@@ -1,14 +1,16 @@
 {
   "name": "backend-fazenda",
   "version": "1.0.0",
-  "description": "",
+  "description": "API para gerenciamento da fazenda urbana (urbanino)",
   "main": "index.js",
   "scripts": {
     "postinstall": "prisma generate",
     "build": "tsc",
     "start": "node dist/index.js",
     "dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/index.ts",
-    "vercel-build": "npx prisma migrate deploy"
+    "vercel-build": "npx prisma migrate deploy",
+    "pull-db": "npx prisma db pull",
+    "push-db": "npx prisma db push"
   },
   "keywords": [],
   "author": "",

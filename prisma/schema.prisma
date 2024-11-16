@@ -62,10 +62,11 @@ model Produto {
   descricao    String
   peso         Float
   preco        Float
+  qtd          Int
   imagem       String
   pedidos      Pedido[]    @relation("PedidoProdutos")
   estoques     Estoque[]
-  Fornecedor   Fornecedor? @relation(fields: [fornecedorId], references: [id])
+  Fornecedor   Fornecedor? @relation(fields: [fornecedorId], references: [id], onDelete: SetNull)
   fornecedorId String?     @db.Uuid
 }
 
@@ -74,7 +75,7 @@ model Fornecedor {
   razao_social String
   cnpj         String           @unique
   uf           String
-  status       FornecedorStatus
+  status       FornecedorStatus @default(ATIVO)
   produtos     Produto[]
 
   pedidos         Pedido[]
@@ -94,13 +95,13 @@ model Usuarios {
   nome  String
   email String @unique
   senha String
-  role  Roles @default(Funcionario)
+  role  Roles  @default(Funcionario)
 }
 
 model Funcionario {
   id              String            @id @default(uuid()) @db.Uuid
   funcao          String
-  status          FuncionarioStatus
+  status          FuncionarioStatus @default(ATIVO)
   departamentos   Departamento[]
   Admin_Fazenda   Admin_Fazenda?    @relation(fields: [admin_FazendaId], references: [id])
   admin_FazendaId String?           @db.Uuid

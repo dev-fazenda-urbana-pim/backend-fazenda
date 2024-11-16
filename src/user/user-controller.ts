@@ -1,7 +1,8 @@
 import bcrypt from "bcryptjs";
 import { Request, Response } from "express";
+import { sign } from "jsonwebtoken";
+import { Roles } from "src/@types/roles";
 import UserRepository from "./user-repository";
-import { generateAccessToken, isValidUUID } from "./utils/user-validators";
 
 class UserController {
   async create(request: Request, response: Response) {
@@ -37,9 +38,9 @@ class UserController {
       return response.status(401).send({ message: "Senha inválida" })
     }
 
-    const accessToken = generateAccessToken(user.id);
+    const accessToken = UserController.generateAccessToken(user.id, user.role);
 
-    return response.status(202).send({
+    return response.status(200).send({
       message: "Usuário logado com sucesso",
       accessToken
     })
@@ -49,7 +50,7 @@ class UserController {
     const { name, email } = request.body
     const { userId } = request.params
 
-    const uuidIsValid = isValidUUID(userId)
+    const uuidIsValid = UserController.isValidUUID(userId)
 
     if (!uuidIsValid) {
       return response.status(400).send({ message: "Id inválido" })
@@ -67,6 +68,24 @@ class UserController {
 
     return response.status(202).send({ message: "Usuário atualizado com sucesso" })
   }
+
+  private static generateAccessToken(userId: string, role: Roles) {
+    const token = sign(
+      { userId, role },
+      process.env.JWT_SECRET as string,
+      {
+        subject: userId,
+        expiresIn: "1d",
+      }
+    )
+
+    return token
+  }
+
+  private static isValidUUID(userId: string) {
+    const regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    return regex.test(userId);
+  };
 }
 
 export default new UserController()
