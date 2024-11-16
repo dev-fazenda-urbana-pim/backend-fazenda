@@ -40,7 +40,7 @@ class UserController {
 
     const accessToken = UserController.generateAccessToken(user.id, user.role);
 
-    return response.status(200).send({
+    return response.send({
       message: "Usuário logado com sucesso",
       accessToken
     })

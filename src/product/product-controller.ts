@@ -9,6 +9,16 @@ class ProductController {
 
     return response.status(201).send({ message: "Produto cadastrado com sucesso" })
   }
+
+  async index(request: Request, response: Response) {
+    const products = await productRepository.listAll()
+
+    if (products.length === 0) {
+      return response.status(404).send({ message: "Nenhum produto cadastrado" })
+    }
+
+    return response.send(products)
+  }
 }
 
 export default new ProductController()

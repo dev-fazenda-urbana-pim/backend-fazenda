@@ -22,6 +22,10 @@ class ProductRepository {
       }
     })
   }
+
+  async listAll() {
+    return await prisma.produto.findMany()
+  }
 }
 
 export default new ProductRepository()

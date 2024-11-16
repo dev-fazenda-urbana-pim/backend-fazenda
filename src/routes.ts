@@ -10,5 +10,6 @@ router.post("/user/session", UserController.login)
 router.patch("/user/update/:userId", UserController.update)
 
 router.post("/products", isSupplier, ProductController.create)
+router.get("/products", ProductController.index)
 
 export { router }
