@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import { Request, Response } from "express";
 import { sign } from "jsonwebtoken";
 import { Roles } from "src/@types/roles";
+import { isValidUUID } from "src/utils/isValidUUID";
 import UserRepository from "./user-repository";
 
 class UserController {
@@ -50,7 +51,7 @@ class UserController {
     const { name, email } = request.body
     const { userId } = request.params
 
-    const uuidIsValid = UserController.isValidUUID(userId)
+    const uuidIsValid = isValidUUID(userId)
 
     if (!uuidIsValid) {
       return response.status(400).send({ message: "Id inválido" })
@@ -81,11 +82,6 @@ class UserController {
 
     return token
   }
-
-  private static isValidUUID(userId: string) {
-    const regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-    return regex.test(userId);
-  };
 }
 
 export default new UserController()

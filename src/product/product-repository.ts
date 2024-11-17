@@ -26,6 +26,22 @@ class ProductRepository {
   async listAll() {
     return await prisma.produto.findMany()
   }
+
+  async remove(productId: string) {
+    return await prisma.produto.delete({
+      where: {
+        id: productId
+      }
+    })
+  }
+
+  async findProductById(productId: string) {
+    return await prisma.produto.findUnique({
+      where: {
+        id: productId
+      }
+    })
+  }
 }
 
 export default new ProductRepository()

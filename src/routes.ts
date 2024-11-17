@@ -9,7 +9,8 @@ router.post("/user/register", UserController.create)
 router.post("/user/session", UserController.login)
 router.patch("/user/update/:userId", UserController.update)
 
-router.post("/products", isSupplier, ProductController.create)
 router.get("/products", ProductController.index)
+router.post("/products", isSupplier, ProductController.create)
+router.delete("/products/:productId", isSupplier, ProductController.delete)
 
 export { router }

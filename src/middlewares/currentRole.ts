@@ -1,5 +1,5 @@
-import { Request } from "express"
-import { verify } from "jsonwebtoken"
+import { Request, Response } from "express"
+import { JsonWebTokenError, verify } from "jsonwebtoken"
 import { Roles } from "src/@types/roles"
 
 interface Payload {
@@ -8,12 +8,24 @@ interface Payload {
   role: Roles
 }
 
-export function currentRole(request: Request) {
+export function currentRole(request: Request, response: Response) {
   const authToken = request.headers.authorization as string
 
-  const [, token] = authToken.split(" ")
+  try {
+    if (!authToken) {
+      throw new JsonWebTokenError("Token not found")
+    }
 
-  const { role } = verify(token, process.env.JWT_SECRET as string) as Payload
+    const [, token] = authToken.split(" ")
 
-  return role
+    const { role } = verify(token, process.env.JWT_SECRET as string) as Payload
+
+    return role
+  } catch (error: JsonWebTokenError | any) {
+    if (error instanceof JsonWebTokenError) {
+      return response.status(401).send({ message: error.message })
+    }
+
+    response.status(500).send({ message: "Internal Server Error" })
+  }
 }
