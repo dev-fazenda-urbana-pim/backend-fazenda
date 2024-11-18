@@ -1,4 +1,5 @@
 import { Router } from "express"
+import EmployeesController from "./employees/employees-controller"
 import { isAdmin } from "./middlewares/isAdmin"
 import { isSupplier } from "./middlewares/isSupplier"
 import ProductController from "./product/product-controller"
@@ -18,5 +19,9 @@ router.delete("/products/:productId", isSupplier, ProductController.delete)
 router.get("/suppliers", SupplierController.index)
 router.post("/suppliers", isAdmin, SupplierController.create)
 router.patch("/suppliers/:supplierId", isAdmin, SupplierController.update)
+
+router.get("/employees", EmployeesController.index)
+router.post("/employees", EmployeesController.create)
+router.patch("/employees/:employeeId", EmployeesController.update)
 
 export { router }
