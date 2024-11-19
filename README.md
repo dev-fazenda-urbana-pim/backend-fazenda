@@ -42,6 +42,11 @@ Para começar a usar a API, siga os passos abaixo:
     npm run dev
     ```
 
+7. Rode o banco de dados:
+    ```bash
+    npx prisma studio
+    ```
+
 ## Contribuição
 
 Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests. Para contribuir:
@@ -55,7 +60,3 @@ Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull re
 ## Licença
 
 Este projeto está licenciado sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
----
-
-Desenvolvido por [DevJoaoPeu](https://github.com/DevJoaoPeu)
