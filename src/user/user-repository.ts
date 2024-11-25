@@ -36,6 +36,18 @@ class UserRepository {
       where: { email },
     });
   }
+
+  async findUserById(id: string) {
+    return await prisma.usuarios.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        nome: true,
+        email: true,
+        role: true,
+      }
+    });
+  }
 }
 
 export default new UserRepository();

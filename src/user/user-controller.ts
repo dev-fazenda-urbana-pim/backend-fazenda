@@ -24,6 +24,16 @@ class UserController {
     return response.status(201).send({ message: "Usuário cadastrado com sucesso" })
   }
 
+  async me(request: Request, response: Response) {
+    const user = await UserRepository.findUserById(request.user_id)
+
+    if (!user) {
+      return response.status(404).send({ message: "Usuário não encontrado" })
+    }
+
+    return response.send(user)
+  }
+
   async login(request: Request, response: Response) {
     const { email, password } = request.body;
 
