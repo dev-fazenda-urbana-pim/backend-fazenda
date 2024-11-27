@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { isValidUUID } from "src/utils/isValidUUID";
+import { isValidUUID } from "../utils/isValidUUID";
 import SupplierRepository from "./supplier-repository";
 
 class SupplierController {

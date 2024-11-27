@@ -1,4 +1,4 @@
-import { prisma } from "src/prisma/prismaClient";
+import { prisma } from "../prisma/prismaClient";
 
 interface CreateProductRepositoryParams {
   name: string;

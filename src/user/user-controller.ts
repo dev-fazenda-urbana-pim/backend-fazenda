@@ -1,8 +1,8 @@
 import bcrypt from "bcryptjs";
 import { Request, Response } from "express";
 import { sign } from "jsonwebtoken";
-import { Roles } from "src/@types/roles";
-import { isValidUUID } from "src/utils/isValidUUID";
+import { Roles } from "../@types/roles";
+import { isValidUUID } from "../utils/isValidUUID";
 import UserRepository from "./user-repository";
 
 class UserController {

@@ -1,5 +1,5 @@
-import { EmployeeStatus } from "src/@types/EmployeeStatus";
-import { prisma } from "src/prisma/prismaClient";
+import { EmployeeStatus } from "../@types/EmployeeStatus";
+import { prisma } from "../prisma/prismaClient";
 
 interface CreateEmployeeRepositoryParams {
   responsability: string;
