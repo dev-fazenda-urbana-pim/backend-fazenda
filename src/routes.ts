@@ -11,7 +11,7 @@ const router = Router()
 
 router.get("/user/me", isAuthenticated, UserController.me)
 router.post("/user/register", UserController.create)
-router.post("/user/session", UserController.login)
+router.post("/user/login", UserController.login)
 router.patch("/user/update/:userId", UserController.update)
 
 router.get("/products", ProductController.index)
