@@ -17,11 +17,16 @@ class UserController {
 
     const hashedPassword = await bcrypt.hash(password, 8)
 
-    await UserRepository.createUser({
+    const newUser = await UserRepository.createUser({
       name, email, hashedPassword
     })
 
-    return response.status(201).send({ message: "Usuário cadastrado com sucesso" })
+    const accessToken = UserController.generateAccessToken(newUser.id, newUser.role);
+
+    return response.status(201).send({
+      message: "Usuário cadastrado com sucesso",
+      accessToken
+    })
   }
 
   async me(request: Request, response: Response) {
@@ -65,12 +70,6 @@ class UserController {
 
     if (!uuidIsValid) {
       return response.status(400).send({ message: "Id inválido" })
-    }
-
-    const user = await UserRepository.findUserByEmail(email);
-
-    if (!user) {
-      return response.status(404).send({ message: "Usuário não encontrado" })
     }
 
     await UserRepository.updateUser({
