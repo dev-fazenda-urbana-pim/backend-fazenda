@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { isValidUUID } from "../utils/isValidUUID";
 import productRepository from "./product-repository";
 
 class ProductController {
@@ -23,12 +22,6 @@ class ProductController {
 
   async delete(request: Request, response: Response) {
     const { productId } = request.params
-
-    const uuidIsValid = isValidUUID(productId)
-
-    if (!uuidIsValid) {
-      return response.status(400).send({ message: "Id inválido" })
-    }
 
     const productExist = await productRepository.findProductById(productId)
 

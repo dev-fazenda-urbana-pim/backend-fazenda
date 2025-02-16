@@ -5,13 +5,6 @@ export class IdNotFound extends Error {
   }
 }
 
-export class DateInvalid extends Error {
-  constructor() {
-    super(`End date cannot be greater than start datee`)
-    this.name = "DateInvalid"
-  }
-}
-
 export class EmailAlreadyExists extends Error {
   constructor(email: string) {
     super(`The provided e-mail ${email} is already in use`)
