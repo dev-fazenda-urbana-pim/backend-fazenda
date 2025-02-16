@@ -2,7 +2,6 @@ import bcrypt from "bcryptjs";
 import { Request, Response } from "express";
 import { sign } from "jsonwebtoken";
 import { Roles } from "../@types/roles";
-import { isValidUUID } from "../utils/isValidUUID";
 import UserRepository from "./user-repository";
 
 class UserController {
@@ -65,12 +64,6 @@ class UserController {
   async update(request: Request, response: Response) {
     const { name, email } = request.body
     const { userId } = request.params
-
-    const uuidIsValid = isValidUUID(userId)
-
-    if (!uuidIsValid) {
-      return response.status(400).send({ message: "Id inválido" })
-    }
 
     await UserRepository.updateUser({
       userId, name, email

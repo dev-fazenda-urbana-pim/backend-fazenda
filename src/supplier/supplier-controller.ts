@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { isValidUUID } from "../utils/isValidUUID";
 import SupplierRepository from "./supplier-repository";
 
 class SupplierController {
@@ -30,12 +29,6 @@ class SupplierController {
   async update(request: Request, response: Response) {
     const { supplierId } = request.params;
     const { socialReason, cnpj, uf, status } = request.body;
-
-    const uuidIsValid = isValidUUID(supplierId);
-
-    if (!uuidIsValid) {
-      return response.status(400).send({ message: "Id inválido" });
-    }
 
     const supplierExists = await SupplierRepository.getSupplierByCnpj(cnpj);
 
