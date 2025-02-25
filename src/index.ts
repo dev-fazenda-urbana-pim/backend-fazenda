@@ -2,7 +2,9 @@ import cors from "cors";
 import * as dotenv from "dotenv";
 import express from "express";
 import helmet from "helmet";
+import "express-async-errors";
 
+import { errorHandler } from "./middlewares/errors";
 import { router } from "./routes";
 
 dotenv.config()
@@ -21,5 +23,6 @@ app.use(
   })
 )
 app.use(router)
+app.use(errorHandler)
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`))
